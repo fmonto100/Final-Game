@@ -30,29 +30,38 @@ public class SpaceShooter extends JPanel implements ActionListener, KeyListener 
 	private int enemySpeed = 2;
 	private Image playerImg;
 	private Image enemyImg;
+	private int level = 1;
 	
 	public SpaceShooter() {
-		setPreferredSize(new Dimension(400, 600));
-		setBackground(Color. BLACK);
-		setFocusable(true);
-		addKeyListener(this);
-		loadImage();
+		this(1);
+	}
 		
-		// Spawn a row of enemies
-		int row;
-		int rows = 5;
-		int spacingX = 60;
-		int spacingY = 45;
-		for (row = 0; row < rows; row++) {
-			int enemiesInRow = rows - row;
-			int rowWidth = (enemiesInRow - 1) * spacingX;
-			int startX = (400 - rowWidth) / 2 - 15;
+		public SpaceShooter(int level) {
+			this.level = level;
+			this.enemySpeed = 1 + level;
 			
-			int col;
-			for (col = 0; col < enemiesInRow; col++) {
-				enemies.add(new Point(startX + col * spacingX, 40 + row * spacingY));
+			setPreferredSize(new Dimension(400, 600));
+			setBackground(Color. BLACK);
+			setFocusable(true);
+			addKeyListener(this);
+			loadImage();
+		
+		
+			// Spawn a row of enemies
+			int row;
+			int rows = 4 + level;
+			int spacingX = 60;
+			int spacingY = 45;
+			for (row = 0; row < rows; row++) {
+				int enemiesInRow = rows - row;
+				int rowWidth = (enemiesInRow - 1) * spacingX;
+				int startX = (400 - rowWidth) / 2 - 15;
+			
+				int col;
+				for (col = 0; col < enemiesInRow; col++) {
+					enemies.add(new Point(startX + col * spacingX, 40 + row * spacingY));
+				}
 			}
-		}
 		
 		//Run game loop at 60
 		timer = new Timer(10, this);
@@ -187,7 +196,7 @@ public class SpaceShooter extends JPanel implements ActionListener, KeyListener 
 	public static void main(String[] args) {
 		JFrame frame = new JFrame("Alien Shooter");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.add(new SpaceShooter());
+		frame.add(new StartScreen(frame));
 		frame.pack();
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
